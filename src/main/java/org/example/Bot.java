@@ -18,6 +18,13 @@ import java.net.URL;
 @Slf4j
 public class Bot extends TelegramLongPollingBot {
     Http http = new Http();
+    String botName;
+    String botToken;
+
+    public Bot(String botName, String botToken) {
+        this.botName = botName;
+        this.botToken = botToken;
+    }
 
     @SneakyThrows
     @Override
@@ -27,17 +34,14 @@ public class Bot extends TelegramLongPollingBot {
             if ("/start".equals(message.getText())) {
                 sendMsg(update.getMessage().getChatId().toString(), "Привет!" + "\n"
                         + "Этот бот умеет показывать рецепты алкогольных коктейлей.");
-            }
-            else if ("/help".equals(message.getText())) {
+            } else if ("/help".equals(message.getText())) {
                 sendMsg(update.getMessage().getChatId().toString(), "Бог в помощь!");
-            }
-            else if (message.getText().startsWith("/")) {
+            } else if (message.getText().startsWith("/")) {
                 Pair<String, String> result = http.cockTail(message.getText());
 
                 sendPhoto(update.getMessage().getChatId().toString(), result.getFirst());
                 sendMsg(update.getMessage().getChatId().toString(), result.getSecond());
-            }
-            else {
+            } else {
                 sendMsg(update.getMessage().getChatId().toString(), "Ошибка :(");
             }
         }
@@ -75,11 +79,11 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "MyTest1_111bot";
+        return botName;
     }
 
     @Override
     public String getBotToken() {
-        return "1886779816:AAFpNvfEaB7p9WpmozxaPFjhm0wecdQFCDY";
+        return botToken;
     }
 }
